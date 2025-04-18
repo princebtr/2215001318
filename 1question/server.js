@@ -4,8 +4,35 @@ import cors from "cors";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const BASE_URL = "http://20.244.56.144/evaluation-service";
+
+app.post("/register", async (req, res) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/register`, req.body, {
+      headers: { "Content-Type": "application/json" },
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(error.response?.status || 500).json({
+      error: error.response?.data || error.message,
+    });
+  }
+});
+
+app.post("/auth", async (req, res) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/auth`, req.body, {
+      headers: { "Content-Type": "application/json" },
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(error.response?.status || 500).json({
+      error: error.response?.data || error.message,
+    });
+  }
+});
 
 app.get("/users", async (req, res) => {
   try {
